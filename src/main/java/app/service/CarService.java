@@ -8,5 +8,5 @@ public interface CarService {
 
     Car find(String brand, String model);
 
-    boolean save(Car car);
+    boolean validate(Car car);
 }

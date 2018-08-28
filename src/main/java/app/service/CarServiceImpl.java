@@ -17,12 +17,7 @@ public class CarServiceImpl implements CarService {
     @Override
     public Car create(boolean isDefault) {
         if (isDefault) {
-            return Car.builder()
-                    .brand(DEFAULT_CAR_BRAND)
-                    .model(DEFAULT_CAR_MODEL)
-                    .color(DEFAULT_CAR_COLOR)
-                    .maxSpeed(DEFAULT_MAX_SPEED)
-                    .build();
+            return getDefaultCar();
         } else {
             throw new NoCustomCarExistsException();
         }
@@ -30,11 +25,24 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public Car find(String brand, String model) {
-        throw new CarNotFoundException();
+        if (brand.equals(DEFAULT_CAR_BRAND) && model.equals(DEFAULT_CAR_MODEL)) {
+            return getDefaultCar();
+        } else {
+            throw new CarNotFoundException();
+        }
     }
 
     @Override
-    public boolean save(Car car) {
+    public boolean validate(Car car) {
         return car.getMaxSpeed() < MAX_POSSIBLE_SPEED;
+    }
+
+    private Car getDefaultCar() {
+        return Car.builder()
+                .brand(DEFAULT_CAR_BRAND)
+                .model(DEFAULT_CAR_MODEL)
+                .color(DEFAULT_CAR_COLOR)
+                .maxSpeed(DEFAULT_MAX_SPEED)
+                .build();
     }
 }

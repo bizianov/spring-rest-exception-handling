@@ -19,7 +19,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/cars")
-public class CarController {
+public class CarController extends BaseApiController {
 
     private final CarService carService;
 
@@ -30,16 +30,16 @@ public class CarController {
 
     @GetMapping(value = "/create/{isDefault}")
     public ResponseEntity<Car> create(@PathVariable("isDefault") boolean isDefault) {
-        return ResponseEntity.ok(carService.create(isDefault));
+        return apiCreate(() -> carService.create(isDefault));
     }
 
     @PutMapping(value = "/find", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Car> find(@Valid @RequestBody SearchCarRequest searchCarRequest, BindingResult bindingResult) {
-        return ResponseEntity.ok(carService.find(searchCarRequest.getBrand(), searchCarRequest.getModel()));
+        return apiFind(() -> carService.find(searchCarRequest.getBrand(), searchCarRequest.getModel()), bindingResult);
     }
 
     @PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> save(@Valid @RequestBody Car car, BindingResult bindingResult) {
-        return ResponseEntity.ok(carService.save(car));
+        return apiValidate(() -> carService.validate(car), bindingResult);
     }
 }
