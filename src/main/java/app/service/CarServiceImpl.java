@@ -19,7 +19,7 @@ public class CarServiceImpl implements CarService {
         if (isDefault) {
             return getDefaultCar();
         } else {
-            throw new NoCustomCarExistsException();
+            throw new NoCustomCarExistsException("Only default car exists");
         }
     }
 
@@ -28,7 +28,7 @@ public class CarServiceImpl implements CarService {
         if (brand.equals(DEFAULT_CAR_BRAND) && model.equals(DEFAULT_CAR_MODEL)) {
             return getDefaultCar();
         } else {
-            throw new CarNotFoundException();
+            throw new CarNotFoundException("No car found");
         }
     }
 
